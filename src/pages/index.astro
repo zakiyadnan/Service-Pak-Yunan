@@ -1,0 +1,157 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import LocationMap from '../components/LocationMap.astro';
+
+const featuredServices = [
+  {
+    title: 'Service AC',
+    description:
+      'Perbaikan segala jenis kerusakan AC, air netes, tidak dingin, berisik, hingga mati total.',
+    icon: 'fa-wind',
+    price: 'Estimasi via WA'
+  },
+  {
+    title: 'Cuci AC',
+    description:
+      'Pembersihan unit indoor dan outdoor secara menyeluruh agar udara lebih sehat dan AC lebih awet.',
+    icon: 'fa-soap',
+    price: 'Rp 70.000'
+  },
+  {
+    title: 'Service Mesin Cuci',
+    description:
+      'Perbaikan mesin cuci 1 tabung atau 2 tabung, error modul, tidak bisa spin/wash.',
+    icon: 'fa-shirt',
+    price: 'Estimasi via WA'
+  }
+];
+---
+
+<Layout title="Service Pak Yunan - Jasa Service AC & Elektronik">
+  <main>
+    <div class="pt-20"><!-- Spacer for fixed navbar -->
+
+      <!-- HERO -->
+      <Hero />
+
+      <!-- FEATURED SERVICES -->
+      <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl lg:text-4xl font-bold text-dark mb-4">
+              Layanan Unggulan
+            </h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+              Kami menyediakan berbagai solusi perbaikan elektronik dengan teknisi berpengalaman.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredServices.map(service => (
+              <ServiceCard {...service} />
+            ))}
+          </div>
+
+          <div class="text-center mt-12">
+            <a
+              href="/services"
+              class="inline-flex items-center text-primary font-semibold hover:text-secondary transition text-lg group"
+            >
+              Lihat Semua Layanan
+              <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHY CHOOSE US -->
+      <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+            <!-- IMAGE (INI YANG DIPERBAIKI) -->
+            <div>
+              <div class="animate-float">
+                <img src="/images/hero-ac.jpg"
+                     alt="Teknisi AC Sedang Memperbaiki"
+                     class="rounded-3xl shadow-xl w-full object-cover h-[400px] mb-4 md:mb-0 transition duration-500 ease-out hover:scale-[1.03]"
+                     loading="lazy">
+             </div>
+            </div>
+
+            <!-- TEXT -->
+            <div>
+              <h2 class="text-3xl lg:text-4xl font-bold text-dark mb-6">
+                Mengapa Memilih Kami?
+              </h2>
+
+              <div class="space-y-6">
+                <div class="flex gap-4">
+                  <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-clock text-primary text-xl"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-xl font-bold mb-2">Respon Cepat</h3>
+                    <p class="text-gray-600">
+                      Tim kami siap datang ke lokasi Anda sesegera mungkin setelah pemesanan dikonfirmasi.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex gap-4">
+                  <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-file-invoice-dollar text-primary text-xl"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-xl font-bold mb-2">Harga Transparan</h3>
+                    <p class="text-gray-600">
+                      Tidak ada biaya tersembunyi. Rincian biaya dijelaskan di awal sebelum pengerjaan.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex gap-4">
+                  <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-shield-halved text-primary text-xl"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-xl font-bold mb-2">Bergaransi</h3>
+                    <p class="text-gray-600">
+                      Setiap pengerjaan servis memiliki garansi untuk memastikan kepuasan Anda.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- LOCATION -->
+      <LocationMap />
+
+      <!-- ORDER CTA -->
+      <section class="py-20 bg-dark text-white text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-primary opacity-10"></div>
+        <div class="container mx-auto px-4 relative z-10">
+          <h2 class="text-3xl lg:text-5xl font-bold mb-6">
+            Punya Masalah dengan AC Anda?
+          </h2>
+          <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+            Jangan biarkan berlarut-larut. Hubungi Pak Yunan sekarang untuk solusi cepat dan tepat.
+          </p>
+          <a
+            href="/order"
+            class="bg-white text-primary text-lg font-bold px-10 py-4 rounded-full shadow-lg hover:bg-gray-100 hover:scale-105 transition transform inline-block"
+          >
+            Buat Pesanan Sekarang
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</Layout>

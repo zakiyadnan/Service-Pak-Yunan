@@ -1,0 +1,36 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-dark text-white py-8 mt-auto" id="footer">
+  <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+    <div>
+      <h3 class="text-xl font-bold mb-4 flex items-center justify-center md:justify-start gap-2">
+        <i class="fa-solid fa-screwdriver-wrench"></i> Service Pak Yunan
+      </h3>
+      <p class="text-gray-400">
+        Jasa service AC dan elektronik profesional, cepat, dan bergaransi. Melayani area sekitar Anda.
+      </p>
+    </div>
+    
+    <div>
+      <h3 class="text-lg font-bold mb-4">Navigasi</h3>
+      <ul class="space-y-2">
+        <li><a href="/" class="text-gray-400 hover:text-primary transition">Home</a></li>
+        <li><a href="/services" class="text-gray-400 hover:text-primary transition">Layanan</a></li>
+        <li><a href="/order" class="text-gray-400 hover:text-primary transition">Pesan Layanan</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="text-lg font-bold mb-4">Kontak</h3>
+      <ul class="space-y-2 text-gray-400">
+        <li><i class="fa-brands fa-whatsapp mr-2"></i> 0858-8158-0217</li>
+        <li><i class="fa-solid fa-location-dot mr-2"></i> Puri Cendana, Tambun</li>
+      </ul>
+    </div>
+  </div>
+  <div class="text-center border-t border-gray-700 mt-8 pt-4 text-gray-500 text-sm">
+    &copy; {currentYear} Zaky Adnan. All rights reserved.
+  </div>
+</footer>

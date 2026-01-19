@@ -1,0 +1,416 @@
+<section class="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+  <div class="bg-primary p-6 text-center">
+    <h2 class="text-2xl font-bold text-white">Formulir Pemesanan Jasa</h2>
+    <p class="text-blue-100 mt-2">Lengkapi data di bawah ini untuk memesan layanan</p>
+  </div>
+
+  <div class="p-8 lg:p-12">
+    <form id="orderForm" class="space-y-8">
+      
+      <!-- Data Diri -->
+      <div class="space-y-4">
+        <h3 class="text-xl font-bold text-dark border-b pb-2">1. Data Pelanggan</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Nama Lengkap</label>
+                <input type="text" name="name" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-blue-100 outline-none transition" placeholder="Contoh: Budi Santoso">
+            </div>
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Nomor WhatsApp</label>
+                <input type="tel" name="phone" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-blue-100 outline-none transition" placeholder="Contoh: 08123456789">
+            </div>
+        </div>
+        <div>
+            <label class="block text-gray-700 font-medium mb-2">Alamat Lengkap</label>
+            <textarea name="address" required rows="3" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-blue-100 outline-none transition" placeholder="Jalan, Nomor Rumah, RT/RW, Kelurahan..."></textarea>
+        </div>
+      </div>
+
+      <!-- Pilih Layanan -->
+      <div class="space-y-4">
+        <h3 class="text-xl font-bold text-dark border-b pb-2">2. Pilih Layanan</h3>
+        <div class="space-y-4" id="servicesContainer">
+            {
+                [
+                    { id: "svc_ac", name: "Service AC", price: 0, isEstimate: true, subtitle: "Pengecekan & Perbaikan" },
+                    { id: "cuci_ac", name: "Cuci AC", price: 70000, isEstimate: false, subtitle: "Cleaning Indoor & Outdoor" },
+                    { id: "bongkar_pasang", name: "Bongkar Pasang AC", price: 250000, isEstimate: false, subtitle: "Pindah Unit" },
+                    { id: "tambah_freon", name: "Tambah Freon AC", price: 0, isEstimate: true, subtitle: "R22/R32/R410A" },
+                    { id: "jual_beli", name: "Jual Beli AC", price: 0, isEstimate: true, subtitle: "Baru & Bekas" },
+                    { id: "svc_mesin_cuci", name: "Service Mesin Cuci", price: 0, isEstimate: true, subtitle: "1 Tabung / 2 Tabung" },
+                    { id: "svc_kulkas", name: "Service Kulkas", price: 0, isEstimate: true, subtitle: "1 Pintu / 2 Pintu / Side by Side" },
+                    { id: "svc_showcase", name: "Service Showcase", price: 0, isEstimate: true, subtitle: "Pendingin Minuman/Makanan" },
+                ].map((service) => (
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl border-2 border-transparent bg-gray-50 hover:bg-blue-50 transition gap-4 service-item">
+                        <label class="flex items-center cursor-pointer select-none flex-1">
+                            <input 
+                                type="checkbox" 
+                                name="services" 
+                                value={service.name} 
+                                data-price={service.price} 
+                                data-is-estimate={service.isEstimate} 
+                                data-id={service.id}
+                                class="peer w-6 h-6 text-primary rounded focus:ring-primary mr-4 service-checkbox"
+                            >
+                            <div class="flex-1">
+                                <span class="block font-semibold text-dark text-lg">{service.name}</span>
+                                <span class="block text-sm text-gray-500">{service.subtitle}</span>
+                            </div>
+                        </label>
+                        
+                        <div class="flex items-center justify-between sm:justify-end gap-6 min-w-[200px]">
+                            <span class={`font-bold ${service.isEstimate ? 'text-gray-400 text-sm' : 'text-primary'}`}>
+                                {service.isEstimate ? 'Estimasi via WA' : `Rp ${service.price.toLocaleString('id-ID')}`}
+                            </span>
+                            
+                            <!-- Quantity Input (Hidden/Disabled by default via script logic) -->
+                            <div class="flex items-center gap-2 qty-wrapper opacity-50 pointer-events-none transition-opacity">
+                                <button type="button" class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-600 font-bold qty-btn-minus">-</button>
+                                <input 
+                                    type="number" 
+                                    name={`qty_${service.id}`} 
+                                    value="1" 
+                                    min="1" 
+                                    max="99" 
+                                    class="w-12 text-center p-1 rounded-lg border-gray-300 focus:border-primary outline-none font-bold bg-white qty-input"
+                                    readonly
+                                >
+                                <button type="button" class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-600 font-bold qty-btn-plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+      </div>
+
+       <!-- Waktu & Catatan -->
+       <div class="space-y-4">
+        <h3 class="text-xl font-bold text-dark border-b pb-2">3. Waktu & Catatan</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Tanggal Servis</label>
+                <input type="date" name="date" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-blue-100 outline-none transition">
+            </div>
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Jam (Perkiraan)</label>
+                <select name="time" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-blue-100 outline-none transition bg-white">
+                    <option value="" disabled selected>Pilih Jam</option>
+                    <option value="07:00">07:00</option>
+                    <option value="08:00">08:00</option>
+                    <option value="09:00">09:00</option>
+                    <option value="10:00">10:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="14:00">14:00</option>
+                    <option value="15:00">15:00</option>
+                    <option value="16:00">16:00</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label class="block text-gray-700 font-medium mb-2">Keluhan / Catatan Tambahan</label>
+            <textarea name="notes" rows="3" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-blue-100 outline-none transition" placeholder="Contoh: AC Air menetes, Bunyi berisik..."></textarea>
+        </div>
+      </div>
+
+      <!-- Total & Actions -->
+      <div id="orderSummary" class="bg-gray-50 p-6 rounded-2xl border border-gray-200 mt-8">
+        <h4 class="font-bold text-lg mb-4 text-center">Rincian Pesanan</h4>
+        <div class="space-y-2 mb-4 text-gray-600 text-sm" id="summaryList">
+            <p class="text-center italic">Pilih layanan untuk melihat rincian...</p>
+        </div>
+        <div class="border-t border-gray-300 pt-4 flex justify-between items-center text-xl font-bold text-dark">
+            <span>Total Estimasi:</span>
+            <span id="totalPrice" class="text-primary">Rp 0</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+         <button type="submit" id="waBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition flex items-center justify-center gap-2 group">
+            <i class="fa-brands fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i>
+            Kirim ke WhatsApp
+         </button>
+         <button type="button" id="exportBtn" class="bg-dark hover:bg-gray-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-print text-xl"></i>
+            Cetak / Simpan (PDF)
+         </button>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+<!-- Include Libraries from CDN for simplicity in standard script if not importing from npm in module script, 
+     but checking package.json, we have them installed. 
+     Astro scripts are modules by default. We can import directly.
+-->
+<script>
+  import { jsPDF } from "jspdf";
+  import html2canvas from "html2canvas";
+
+  const form = document.getElementById('orderForm') as HTMLFormElement;
+  const totalPriceEl = document.getElementById('totalPrice');
+  const summaryListEl = document.getElementById('summaryList');
+  const exportBtn = document.getElementById('exportBtn');
+  
+  // UI Helpers
+  function toggleQuantityInput(checkbox: HTMLInputElement) {
+      const container = checkbox.closest('.service-item');
+      const qtyWrapper = container?.querySelector('.qty-wrapper');
+      if (qtyWrapper) {
+          if (checkbox.checked) {
+              qtyWrapper.classList.remove('opacity-50', 'pointer-events-none');
+              qtyWrapper.classList.add('opacity-100');
+          } else {
+              qtyWrapper.classList.add('opacity-50', 'pointer-events-none');
+              qtyWrapper.classList.remove('opacity-100');
+              // Reset quantity to 1 when unchecked
+              const input = qtyWrapper.querySelector('.qty-input') as HTMLInputElement;
+              if (input) input.value = '1';
+          }
+      }
+      calculateTotal();
+  }
+
+  // Quantity Buttons
+  document.querySelectorAll('.qty-btn-plus').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+          const input = (e.target as HTMLElement).previousElementSibling as HTMLInputElement;
+          if (input) {
+              input.value = (parseInt(input.value) + 1).toString();
+              calculateTotal();
+          }
+      });
+  });
+
+  document.querySelectorAll('.qty-btn-minus').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+          const input = (e.target as HTMLElement).nextElementSibling as HTMLInputElement;
+          if (input) {
+              const val = parseInt(input.value);
+              if (val > 1) {
+                  input.value = (val - 1).toString();
+                  calculateTotal();
+              }
+          }
+      });
+  });
+
+  const servicesCheckboxes = document.querySelectorAll('.service-checkbox');
+  servicesCheckboxes.forEach((cb: any) => {
+      cb.addEventListener('change', () => toggleQuantityInput(cb));
+  });
+
+  
+  let selectedServices: { name: string; price: number; isEstimate: boolean; qty: number }[] = [];
+  
+  function formatRupiah(angka: number) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0
+      }).format(angka);
+  }
+
+  function formatDate(dateString: string) {
+      if (!dateString) return "-";
+      const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'short', year: 'numeric' };
+      return new Date(dateString).toLocaleDateString('id-ID', options);
+  }
+
+  function calculateTotal() {
+    selectedServices = [];
+    let total = 0;
+
+    servicesCheckboxes.forEach((checkbox: any) => {
+        if (checkbox.checked) {
+            const price = parseInt(checkbox.dataset.price);
+            const isEstimate = checkbox.dataset.isEstimate === 'true';
+            
+            // Get Qty
+            const container = checkbox.closest('.service-item');
+            const qtyInput = container?.querySelector('.qty-input') as HTMLInputElement;
+            const qty = parseInt(qtyInput?.value || '1');
+
+            selectedServices.push({
+                name: checkbox.value,
+                price: price,
+                isEstimate: isEstimate,
+                qty: qty
+            });
+
+            if (!isEstimate) {
+                total += price * qty;
+            }
+        }
+    });
+
+    // Update Summary UI
+    if (selectedServices.length > 0) {
+        summaryListEl!.innerHTML = selectedServices.map(s => 
+            `<div class="flex justify-between items-center py-1">
+                <div class="flex-1">
+                    <span class="font-medium">${s.name}</span>
+                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full ml-2">x${s.qty}</span>
+                </div>
+                <div class="text-right">
+                    ${s.isEstimate 
+                        ? '<span class="text-xs font-bold text-gray-500">Estimasi via WA</span>' 
+                        : formatRupiah(s.price * s.qty)}
+                </div>
+             </div>`
+        ).join('');
+    } else {
+        summaryListEl!.innerHTML = `<p class="text-center italic">Belum ada layanan dipilih.</p>`;
+    }
+
+    // Upadte Summary Total
+    if (totalPriceEl) {
+        if (total === 0 && selectedServices.length > 0) {
+             totalPriceEl.innerHTML = '<span class="text-lg">Estimasi via WA</span>';
+        } else {
+             totalPriceEl.innerText = formatRupiah(total);
+        }
+    }
+  }
+
+  // WhatsApp Submission
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    // Basic Validation
+    if (selectedServices.length === 0) {
+        alert('Harap pilih minimal satu layanan!');
+        return;
+    }
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
+    
+    // Recalculate Total for Message
+    let total = 0;
+    selectedServices.forEach(s => {
+        if (!s.isEstimate) total += s.price * s.qty;
+    });
+
+    const message = `Assalamualaikum Pak Yunan,
+Saya ingin memesan jasa servis:
+
+*Nama:* ${data.name}
+*Alamat:* ${data.address}
+*No HP:* ${data.phone}
+
+*Layanan:*
+${selectedServices.map(s => `- ${s.name} (${s.qty} unit) ${s.isEstimate ? '[Estimasi]' : ''}`).join('\n')}
+
+*Waktu:* ${formatDate(data.date as string)} jam ${data.time}
+*Catatan:* ${data.notes || '-'}
+
+*Estimasi Total:* ${formatRupiah(total)}
+
+Terima kasih.`;
+
+    const whatsappUrl = `https://wa.me/6285881580217?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  });
+
+  // PDF Export
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async () => {
+        if (selectedServices.length === 0) {
+             alert('Pilih layanan dulu untuk mencetak rincian!');
+             return;
+        }
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+        
+        let total = 0;
+        selectedServices.forEach(s => {
+             if (!s.isEstimate) total += s.price * s.qty;
+        });
+
+        // Create Receipt UI off-screen
+        const receipt = document.createElement('div');
+        receipt.style.padding = '40px';
+        receipt.style.width = '600px';
+        receipt.style.background = '#fff';
+        receipt.style.fontFamily = 'sans-serif';
+        receipt.style.position = 'fixed';
+        receipt.style.top = '-9999px';
+        receipt.style.left = '-9999px';
+        receipt.innerHTML = `
+            <div style="text-align: center; border-bottom: 2px solid #06b6d4; padding-bottom: 20px; margin-bottom: 20px;">
+                <h1 style="color: #06b6d4; font-size: 24px; margin:0;">SERVICE PAK YUNAN</h1>
+                <p style="margin: 5px 0; color: #666;">Jasa Service AC & Elektronik Profesional</p>
+            </div>
+            <h2 style="font-size: 18px; margin-bottom: 15px;">RINCIAN PESANAN</h2>
+             <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                <tr><td style="padding: 5px 0; color: #666;">Nama</td><td style="font-weight: bold;">: ${data.name}</td></tr>
+                <tr><td style="padding: 5px 0; color: #666;">Tanggal</td><td style="font-weight: bold;">: ${formatDate(data.date as string)} - ${data.time}</td></tr>
+                <tr><td style="padding: 5px 0; color: #666;">Alamat</td><td style="font-weight: bold;">: ${data.address}</td></tr>
+            </table>
+            
+            <div style="background: #f0f9ff; padding: 15px; border-radius: 10px;">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr style="text-align:left; color:#666; font-size:12px; border-bottom:1px solid #ccc;">
+                            <th style="padding-bottom:5px;">LAYANAN</th>
+                            <th style="padding-bottom:5px;">QTY</th>
+                            <th style="text-align: right; padding-bottom:5px;">HARGA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    ${selectedServices.map(s => `
+                        <tr>
+                            <td style="padding: 10px 0; border-bottom: 1px dashed #eee;">${s.name}</td>
+                            <td style="padding: 10px 0; border-bottom: 1px dashed #eee;">x${s.qty}</td>
+                            <td style="text-align: right; font-weight: bold; padding: 10px 0; border-bottom: 1px dashed #eee;">
+                                ${s.isEstimate ? 'Estimasi' : formatRupiah(s.price * s.qty)}
+                            </td>
+                        </tr>
+                    `).join('')}
+                    </tbody>
+                    <tfoot>
+                    <tr style="font-size: 18px; font-weight: bold; color: #06b6d4;">
+                        <td colspan="2" style="padding-top: 15px;">TOTAL ESTIMASI</td>
+                        <td style="text-align: right; padding-top: 15px;">
+                            ${total === 0 && selectedServices.length > 0 ? 'Estimasi via WA' : formatRupiah(total)}
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            
+            <p style="text-align: center; margin-top: 30px; font-size: 12px; color: #999;">
+                Terima kasih telah menggunakan jasa kami.<br>
+                Service Pak Yunan - 2026
+            </p>
+        `;
+
+        document.body.appendChild(receipt);
+
+        try {
+            const canvas = await html2canvas(receipt);
+            const imgData = canvas.toDataURL('image/png');
+            
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'px',
+                format: [canvas.width, canvas.height]
+            });
+            
+            pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+            pdf.save(`Pesanan-${data.name.toString().replace(/\s+/g, '-')}.pdf`);
+            
+        } catch (err) {
+            console.error(err);
+            alert('Gagal membuat PDF');
+        } finally {
+            document.body.removeChild(receipt);
+        }
+    });
+  }
+</script>

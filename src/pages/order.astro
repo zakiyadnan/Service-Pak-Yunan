@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import OrderForm from '../components/OrderForm.astro';
+---
+
+<Layout title="Pesan Jasa - Service Pak Yunan">
+  <main class="pt-24 pb-20 px-4 min-h-screen bg-gray-50 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+    <div class="container mx-auto">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl lg:text-5xl font-bold text-dark mb-4">Pesan Layanan</h1>
+            <p class="text-gray-600">Isi formulir di bawah ini dan teknisi kami akan segera menghubungi Anda.</p>
+        </div>
+        
+        <OrderForm />
+        
+        <div class="mt-12 text-center text-gray-500 text-sm">
+            <p><i class="fa-solid fa-lock mr-2"></i>Data Anda aman dan hanya digunakan untuk keperluan pemesanan.</p>
+        </div>
+    </div>
+  </main>
+</Layout>

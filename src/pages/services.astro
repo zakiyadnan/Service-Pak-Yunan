@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+
+const services = [
+  {
+    title: 'Service AC',
+    description: 'Perbaikan segala jenis kerusakan AC Split, Cassette, Standing, dll. Mengatasi AC bocor, mati total, error, dan tidak dingin.',
+    icon: 'fa-wind',
+    price: 'Estimasi via WA'
+  },
+  {
+    title: 'Cuci AC',
+    description: 'Pembersihan rutin unit indoor dan outdoor. Menggunakan peralatan khusus dan plastik pelindung agar tidak kotor.',
+    icon: 'fa-soap',
+    price: 'Mulai Rp 70.000'
+  },
+  {
+    title: 'Bongkar Pasang AC',
+    description: 'Jasa bongkar AC lama, pasang AC baru, atau relokasi AC antar ruangan/lokasi. Termasuk vakum instalasi.',
+    icon: 'fa-screwdriver',
+    price: 'Estimasi via WA'
+  },
+  {
+    title: 'Isi Freon',
+    description: 'Penambahan atau pengisian ulang Freon R22, R32, R410A. Harga menyesuaikan jenis dan jumlah tekanan.',
+    icon: 'fa-gas-pump',
+    price: 'Estimasi via WA'
+  },
+  {
+    title: 'Service Mesin Cuci',
+    description: 'Perbaikan mesin cuci Top Loading, Front Loading, dan 2 Tabung. Masalah air tidak keluar, spin error, mati total.',
+    icon: 'fa-shirt',
+    price: 'Estimasi via WA'
+  },
+  {
+    title: 'Service Kulkas',
+    description: 'Perbaikan kulkas 1 pintu, 2 pintu, freezer, dan showcase. Masalah tidak dingin, bocor, atau kompresor mati.',
+    icon: 'fa-temperature-arrow-down',
+    price: 'Estimasi via WA'
+  },
+  {
+    title: 'Service Showcase',
+    description: 'Perbaikan showcase pendingin minuman/kue. Memastikan suhu stabil untuk produk dagangan Anda.',
+    icon: 'fa-box-open',
+    price: 'Estimasi via WA'
+  },
+  {
+    title: 'Jual Beli AC',
+    description: 'Menerima jual beli AC baru dan bekas berkualitas dengan garansi toko.',
+    icon: 'fa-hand-holding-dollar',
+    price: 'Hubungi Kami'
+  }
+];
+---
+
+<Layout title="Layanan Kami - Service Pak Yunan">
+  <main class="pt-24 pb-20"> <!-- PT to account for fixed navbar -->
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h1 class="text-4xl lg:text-5xl font-bold text-dark mb-6">Layanan Profesional Kami</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Daftar lengkap layanan servis elektronik dan pendingin yang siap kami kerjakan dengan sepenuh hati.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {services.map(service => (
+          <ServiceCard {...service} />
+        ))}
+      </div>
+
+      <div class="mt-20 bg-blue-50 rounded-3xl p-8 lg:p-12 text-center">
+        <h2 class="text-3xl font-bold text-dark mb-4">Butuh Layanan Lain?</h2>
+        <p class="text-gray-600 mb-8 max-w-2xl mx-auto">
+          Jika masalah elektronik Anda tidak tercantum di atas, jangan ragu untuk menanyakannya kepada kami via WhatsApp.
+        </p>
+        <a href="https://wa.me/6285881580217" target="_blank" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-xl transition shadow-lg inline-flex items-center gap-2">
+            <i class="fa-brands fa-whatsapp text-2xl"></i> Konsultasi Gratis
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
