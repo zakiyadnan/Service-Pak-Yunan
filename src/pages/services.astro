@@ -7,49 +7,100 @@ const services = [
     title: 'Service AC',
     description: 'Perbaikan segala jenis kerusakan AC Split, Cassette, Standing, dll. Mengatasi AC bocor, mati total, error, dan tidak dingin.',
     icon: 'fa-wind',
-    price: 'Estimasi via WA'
+    price: 'Estimasi via WA',
+    image: '/images/service-ac.webp'
   },
   {
     title: 'Cuci AC',
     description: 'Pembersihan rutin unit indoor dan outdoor. Menggunakan peralatan khusus dan plastik pelindung agar tidak kotor.',
     icon: 'fa-soap',
-    price: 'Mulai Rp 70.000'
+    price: 'Mulai Rp 70.000',
+    image: '/images/cuci-ac.webp'
   },
   {
     title: 'Bongkar Pasang AC',
     description: 'Jasa bongkar AC lama, pasang AC baru, atau relokasi AC antar ruangan/lokasi. Termasuk vakum instalasi.',
     icon: 'fa-screwdriver',
-    price: 'Estimasi via WA'
+    price: 'Estimasi via WA',
+    image: '/images/bongkar-ac.webp'
   },
   {
     title: 'Isi Freon',
     description: 'Penambahan atau pengisian ulang Freon R22, R32, R410A. Harga menyesuaikan jenis dan jumlah tekanan.',
     icon: 'fa-gas-pump',
-    price: 'Estimasi via WA'
+    price: 'Estimasi via WA',
+    image: '/images/isi-freon.webp'
   },
   {
     title: 'Service Mesin Cuci',
     description: 'Perbaikan mesin cuci Top Loading, Front Loading, dan 2 Tabung. Masalah air tidak keluar, spin error, mati total.',
     icon: 'fa-shirt',
-    price: 'Estimasi via WA'
+    price: 'Estimasi via WA',
+    image: '/images/mesin-cuci.webp'
   },
   {
     title: 'Service Kulkas',
     description: 'Perbaikan kulkas 1 pintu, 2 pintu, freezer, dan showcase. Masalah tidak dingin, bocor, atau kompresor mati.',
     icon: 'fa-temperature-arrow-down',
-    price: 'Estimasi via WA'
+    price: 'Estimasi via WA',
+    image: '/images/kulkas.webp'
   },
   {
     title: 'Service Showcase',
     description: 'Perbaikan showcase pendingin minuman/kue. Memastikan suhu stabil untuk produk dagangan Anda.',
     icon: 'fa-box-open',
-    price: 'Estimasi via WA'
+    price: 'Estimasi via WA',
+    image: '/images/showcase.webp'
   },
   {
     title: 'Jual Beli AC',
     description: 'Menerima jual beli AC baru dan bekas berkualitas dengan garansi toko.',
     icon: 'fa-hand-holding-dollar',
-    price: 'Hubungi Kami'
+    price: 'Hubungi Kami',
+    image: '/images/jual-beli.webp'
+  }
+];
+
+const testimonials = [
+  {
+    name: "Pak RT Jefry",
+    service: "Service AC",
+    content: "Service AC-nya memuaskan, dijelaskan dengan detail dan jujur, datang tepat waktu, dan hasil kerjanya rapi teknisi pun ramah."
+  },
+  {
+    name: "Pak Angga PC",
+    service: "Isi Freon AC",
+    content: "Teknisi menjelaskan kondisi freon dengan jelas, tidak asal isi, Harga terjangkau dan hasilnya sesuai harapan."
+  },
+  {
+    name: "Koh Andri",
+    service: "Cuci AC",
+    content: "Kerja rapi, rumah tetap bersih, AC seperti baru, airnya hitam semuanya keluar. Recommended untuk cuci AC rutin."
+  },
+  {
+    name: "Pak Deny",
+    service: "Bongkar Pasang AC",
+    content: "Bongkar pasang AC rapi dan aman, tidak ada kerusakan, hasil pemasangan sangat profesional."
+  },
+  {
+    name: "Babeh Ucup",
+    service: "Service Mesin Cuci",
+    content: "Teknisi jujur dan tidak mengada-ada kerusakan, mesin cuci yang rusak sekarang normal kembali."
+  },
+  {
+    name: "Pak Tono",
+    service: "Service Showcase",
+    content: "Teknisi paham mesin pendingin usaha, service rapi dan hasilnya maksimal."
+  },
+  {
+    name: "Pak Gito",
+    service: "Service Kulkas",
+    content: "Kulkas jadi dingin dan tidak bocor lagi, harga masuk akal dan teknisi ramah."
+  },
+  {
+    name: "Mas Syakir",
+    service: "Jual Beli AC Baru & Bekas",
+    content: "Penjual jujur, kondisi AC sesuai penjelasan, rekomendasi tempat beli AC baru maupun bekas."
   }
 ];
 ---
@@ -60,7 +111,7 @@ const services = [
       <div class="text-center mb-16">
         <h1 class="text-4xl lg:text-5xl font-bold text-dark mb-6">Layanan Profesional Kami</h1>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          Daftar lengkap layanan servis elektronik dan pendingin di <span class="font-semibold text-primary">Bekasi</span> yang siap kami kerjakan dengan sepenuh hati.
+          Daftar lengkap layanan <span class="font-semibold text-primary">service AC terdekat</span> dan elektronik di <span class="font-semibold text-primary">Tambun Selatan, Bekasi</span>. Kami menjangkau area Mangun Jaya, Sumber Jaya, hingga Jejalen Jaya.
         </p>
       </div>
 
@@ -69,6 +120,56 @@ const services = [
           <ServiceCard {...service} />
         ))}
       </div>
+
+      <!-- TESTIMONIALS SECTION -->
+      <section class="mt-32">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-dark mb-4">Testimoni Pelanggan</h2>
+          <div class="flex justify-center gap-1 text-yellow-400 mb-2">
+            {[...Array(5)].map(() => <i class="fa-solid fa-star"></i>)}
+          </div>
+          <p class="text-gray-600">Apa kata mereka tentang layanan Pak Yunan?</p>
+        </div>
+
+        <div class="relative group pb-10">
+          <!-- Slider Container with Viewport -->
+          <div class="overflow-hidden">
+            <div id="testimonial-slider" class="flex transition-transform duration-700 ease-in-out">
+              {testimonials.map((t) => (
+                <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-3">
+                  <div class="bg-white p-8 rounded-2xl shadow-lg h-full flex flex-col transition-all duration-300 ease-out cursor-pointer hover:shadow-2xl md:hover:-translate-y-1.5 md:hover:scale-[1.02] active:-translate-y-1 active:scale-95 focus-visible:ring-2 focus-visible:ring-primary outline-none">
+                    <div class="flex text-yellow-400 mb-4 gap-1">
+                      {[...Array(5)].map(() => <i class="fa-solid fa-star text-sm"></i>)}
+                    </div>
+                    <p class="text-gray-600 italic mb-6 flex-grow leading-relaxed">
+                      "{t.content}"
+                    </p>
+                    <div class="pt-6 border-t border-gray-50 mt-auto">
+                      <p class="font-bold text-dark">{t.name}</p>
+                      <p class="text-primary text-sm font-medium">{t.service}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <!-- Navigation Arrows -->
+          <button id="prev-btn" class="absolute left-2 md:left-0 top-1/2 -translate-y-1/2 md:-translate-x-4 w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-dark hover:bg-primary hover:text-white transition-all z-20 md:opacity-0 md:group-hover:opacity-100 md:group-hover:translate-x-0">
+            <i class="fa-solid fa-chevron-left text-lg md:text-xl"></i>
+          </button>
+          <button id="next-btn" class="absolute right-2 md:right-0 top-1/2 -translate-y-1/2 md:translate-x-4 w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-dark hover:bg-primary hover:text-white transition-all z-20 md:opacity-0 md:group-hover:opacity-100 md:group-hover:translate-x-0">
+            <i class="fa-solid fa-chevron-right text-lg md:text-xl"></i>
+          </button>
+          
+          <!-- Slider Navigation Dots -->
+          <div class="flex justify-center gap-2 mt-8">
+            {testimonials.map((_, i) => (
+              <div class={`testimonial-dot w-2 h-2 rounded-full bg-gray-300 transition-colors cursor-pointer ${i === 0 ? 'bg-primary' : ''}`} data-index={i}></div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <div class="mt-20 bg-blue-50 rounded-3xl p-8 lg:p-12 text-center">
         <h2 class="text-3xl font-bold text-dark mb-4">Butuh Layanan Lain?</h2>
@@ -82,3 +183,102 @@ const services = [
     </div>
   </main>
 </Layout>
+
+<script>
+  let currentIndex = 0;
+  const slider = document.getElementById('testimonial-slider');
+  const dots = document.querySelectorAll('.testimonial-dot');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const testimonialsCount = dots.length;
+  let interval;
+
+  function getVisibleCards() {
+    if (window.innerWidth >= 1024) return 3;
+    if (window.innerWidth >= 768) return 2;
+    return 1;
+  }
+
+  function updateSlider() {
+    if (!slider) return;
+    
+    const visibleCards = getVisibleCards();
+    const maxIndex = testimonialsCount - visibleCards;
+    
+    if (currentIndex > maxIndex) currentIndex = 0;
+    if (currentIndex < 0) currentIndex = maxIndex;
+
+    const offset = currentIndex * (100 / visibleCards);
+    slider.style.transform = `translateX(-${offset}%)`;
+
+    // Update dots
+    dots.forEach((dot, i) => {
+      const isActive = i === currentIndex || 
+                       (visibleCards >= 2 && i === currentIndex + 1) ||
+                       (visibleCards === 3 && i === currentIndex + 2);
+      
+      if (i === currentIndex) {
+        dot.classList.add('bg-primary');
+        dot.classList.remove('bg-gray-300');
+      } else {
+        dot.classList.remove('bg-primary');
+        dot.classList.add('bg-gray-300');
+      }
+    });
+  }
+
+  function startAutoPlay() {
+    stopAutoPlay();
+    interval = setInterval(() => {
+      const visibleCards = getVisibleCards();
+      const maxIndex = testimonialsCount - visibleCards;
+      currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
+      updateSlider();
+    }, 4000); // Calmer timing for professional feel
+  }
+
+  function stopAutoPlay() {
+    if (interval) clearInterval(interval);
+  }
+
+  function handleManualNav(direction) {
+    stopAutoPlay();
+    const visibleCards = getVisibleCards();
+    const maxIndex = testimonialsCount - visibleCards;
+    
+    if (direction === 'next') {
+      currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
+    } else {
+      currentIndex = currentIndex <= 0 ? maxIndex : currentIndex - 1;
+    }
+    
+    updateSlider();
+    startAutoPlay(); // Restart timer
+  }
+
+  // Event Listeners
+  if (slider) {
+    // Only pause on hover for devices that support it (prevents stuck mobile swiper)
+    const isHoverable = window.matchMedia('(hover: hover)').matches;
+    if (isHoverable) {
+      slider.parentElement.parentElement.addEventListener('mouseenter', stopAutoPlay);
+      slider.parentElement.parentElement.addEventListener('mouseleave', startAutoPlay);
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', () => handleManualNav('prev'));
+    if (nextBtn) nextBtn.addEventListener('click', () => handleManualNav('next'));
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        currentIndex = parseInt(dot.getAttribute('data-index'));
+        handleManualNav('none');
+      });
+    });
+    
+    window.addEventListener('resize', updateSlider);
+    
+    // Initial start
+    startAutoPlay();
+    updateSlider();
+  }
+</script>

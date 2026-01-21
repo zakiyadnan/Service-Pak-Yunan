@@ -71,14 +71,24 @@ const featuredServices = [
         <div class="container mx-auto px-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
-            <!-- IMAGE (INI YANG DIPERBAIKI) -->
-            <div>
-              <div class="animate-float">
-                <img src="/images/hero-ac.jpg"
-                     alt="Teknisi AC Sedang Memperbaiki"
-                     class="rounded-3xl shadow-xl w-full object-cover h-[400px] mb-4 md:mb-0 transition duration-500 ease-out hover:scale-[1.03]"
+            <!-- VERTICAL STACKED IMAGES WITH DIAGONAL MOTION -->
+            <div class="flex flex-col gap-8 w-full max-w-xl mx-auto md:mx-0">
+              <!-- Main Image (teks-ac2) - Moves Right to Left & Top to Bottom -->
+              <div class="animate-diagonal-1">
+                <img src="/images/logo-1.webp" 
+                     alt="Service AC Terpercaya" 
+                     class="rounded-3xl shadow-xl w-full h-[217px] object-cover border-2 border-white"
                      loading="lazy">
-             </div>
+              </div>
+              
+              <!-- Brand Accent Image (service-ac) - Moves Left to Right & Bottom to Top -->
+              <div class="animate-diagonal-2">
+                <img src="/images/service-ac.webp"
+                     alt="Teknisi AC Sedang Memperbaiki"
+                     class="rounded-3xl shadow-xl w-full h-[280px] object-cover border-2 border-white"
+                     loading="lazy">
+              </div>
+
             </div>
 
             <!-- TEXT -->
@@ -155,3 +165,28 @@ const featuredServices = [
     </div>
   </main>
 </Layout>
+
+<style>
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { transform: translateY(1rem); }
+    to { transform: translateY(0); }
+  }
+  @keyframes diagonal-1 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-12px, 12px); }
+  }
+  @keyframes diagonal-2 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(12px, -12px); }
+  }
+  .animate-diagonal-1 {
+    animation: diagonal-1 4s ease-in-out infinite;
+  }
+  .animate-diagonal-2 {
+    animation: diagonal-2 4s ease-in-out infinite;
+  }
+</style>

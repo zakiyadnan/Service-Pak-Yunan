@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://servicepakyunan.vercel.app/sitemap.xml
+Sitemap: https://servicepakyunan.vercel.app/sitemap-index.xml
