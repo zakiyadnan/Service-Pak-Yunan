@@ -11,6 +11,7 @@ export default {
             },
             fontFamily: {
                 sans: ['Inter', 'system-ui', 'sans-serif'],
+                courgette: ['Courgette', 'cursive'],
             },
             animation: {
                 'float': 'float 3s ease-in-out infinite',

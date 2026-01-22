@@ -137,15 +137,15 @@ const testimonials = [
             <div id="testimonial-slider" class="flex transition-transform duration-700 ease-in-out">
               {testimonials.map((t) => (
                 <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-3">
-                  <div class="bg-white p-8 rounded-2xl shadow-lg h-full flex flex-col transition-all duration-300 ease-out cursor-pointer hover:shadow-2xl md:hover:-translate-y-1.5 md:hover:scale-[1.02] active:-translate-y-1 active:scale-95 focus-visible:ring-2 focus-visible:ring-primary outline-none">
+                  <div class="p-8 h-full flex flex-col items-center text-center courgette-regular">
                     <div class="flex text-yellow-400 mb-4 gap-1">
                       {[...Array(5)].map(() => <i class="fa-solid fa-star text-sm"></i>)}
                     </div>
-                    <p class="text-gray-600 italic mb-6 flex-grow leading-relaxed">
+                    <p class="text-gray-700 italic mb-6 flex-grow leading-relaxed text-lg">
                       "{t.content}"
                     </p>
-                    <div class="pt-6 border-t border-gray-50 mt-auto">
-                      <p class="font-bold text-dark">{t.name}</p>
+                    <div class="pt-6 border-t border-gray-100 w-full">
+                      <p class="font-bold text-dark text-xl">{t.name}</p>
                       <p class="text-primary text-sm font-medium">{t.service}</p>
                     </div>
                   </div>
