@@ -5,3 +5,11 @@
 html {
   scroll-behavior: smooth;
 }
+
+@layer utilities {
+  @media (min-width: 400px) {
+    .xs\:flex-row {
+      flex-direction: row !important;
+    }
+  }
+}

@@ -34,7 +34,7 @@
                 [
                     { id: "svc_ac", name: "Service AC", price: 0, isEstimate: true, subtitle: "Pengecekan & Perbaikan" },
                     { id: "cuci_ac", name: "Cuci AC", price: 70000, isEstimate: false, subtitle: "Cleaning Indoor & Outdoor" },
-                    { id: "bongkar_pasang", name: "Bongkar Pasang AC", price: 250000, isEstimate: false, subtitle: "Pindah Unit" },
+                    { id: "bongkar_pasang", name: "Bongkar Pasang AC", price: 0, isEstimate: true, subtitle: "Pindah Unit" },
                     { id: "tambah_freon", name: "Tambah Freon AC", price: 0, isEstimate: true, subtitle: "R22/R32/R410A" },
                     { id: "jual_beli", name: "Jual Beli AC", price: 0, isEstimate: true, subtitle: "Baru & Bekas" },
                     { id: "svc_mesin_cuci", name: "Service Mesin Cuci", price: 0, isEstimate: true, subtitle: "1 Tabung / 2 Tabung" },
@@ -117,13 +117,65 @@
 
       <!-- Total & Actions -->
       <div id="orderSummary" class="bg-gray-50 p-6 rounded-2xl border border-gray-200 mt-8">
-        <h4 class="font-bold text-lg mb-4 text-center">Rincian Pesanan</h4>
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+            <h4 class="font-bold text-lg text-center sm:text-left">Rincian Pesanan</h4>
+            <div id="statusBadge" class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-100 text-blue-700 hidden">
+                Pemesanan: Estimasi
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 hidden" id="statusControls">
+             <button type="button" id="startWorkBtn" class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-orange-100 text-orange-700 hover:bg-orange-200 font-bold text-sm transition">
+                <i class="fa-solid fa-play"></i> Mulai Pengerjaan
+             </button>
+             <button type="button" id="finalizeBtn" class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 font-bold text-sm transition">
+                <i class="fa-solid fa-check-double"></i> Finalisasi Rincian
+             </button>
+        </div>
+
         <div class="space-y-2 mb-4 text-gray-600 text-sm" id="summaryList">
             <p class="text-center italic">Pilih layanan untuk melihat rincian...</p>
         </div>
+
+        <!-- Add Manual Item Button -->
+        <div id="addItemContainer" class="hidden mb-4 border-t border-gray-200 pt-4">
+             <button type="button" id="addItemBtn" class="w-full py-2 px-4 rounded-xl border-2 border-dashed border-gray-300 text-gray-500 hover:border-primary hover:text-primary font-bold text-sm transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-plus-circle"></i> Tambah Item Layanan
+             </button>
+        </div>
+
         <div class="border-t border-gray-300 pt-4 flex justify-between items-center text-xl font-bold text-dark">
-            <span>Total Estimasi:</span>
+            <span id="totalLabel">Total Estimasi:</span>
             <span id="totalPrice" class="text-primary">Rp 0</span>
+        </div>
+
+        <!-- Payment Section (Technician Only - FINAL) -->
+        <div id="paymentSection" class="hidden mt-6 border-t border-gray-200 pt-6">
+            <h5 class="font-bold text-gray-700 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-wallet text-primary"></i> Metode Pembayaran
+            </h5>
+            
+            <div class="grid grid-cols-1 gap-4">
+                <div class="p-4 rounded-xl border border-gray-200 bg-white">
+                    <div class="font-bold text-gray-800 mb-1">Tunai</div>
+                    <div class="text-sm text-gray-500">Bayar langsung di tempat</div>
+                </div>
+                
+                <div class="p-4 rounded-xl border border-gray-200 bg-white">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="font-bold text-gray-800">Transfer Bank BSI</div>
+                        <span class="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">PAK YUNAN</span>
+                    </div>
+                    <div class="text-lg font-mono font-bold text-primary tracking-wider">7241103034</div>
+                    <div class="text-[10px] text-gray-400 mt-1 uppercase">A.N. Hendri Yunan</div>
+                </div>
+
+                <div class="p-4 rounded-xl border border-gray-200 bg-white text-center">
+                    <div class="font-bold text-gray-800 mb-2 text-left">Scan QRIS</div>
+                    <img src="/images/qris.webp" alt="QRIS Pak Yunan" class="w-48 mx-auto rounded-lg shadow-sm border border-gray-100" />
+                    <div class="text-[10px] text-primary-600 mt-2 uppercase italic font-medium tracking-widest bg-gray-50 py-1 inline-block px-3 rounded-full border border-gray-100">Service Pak Yunan</div>
+                </div>
+            </div>
         </div>
       </div>
 
@@ -132,10 +184,19 @@
             <i class="fa-brands fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i>
             Kirim ke WhatsApp
          </button>
-         <button type="button" id="exportBtn" class="bg-dark hover:bg-gray-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+          <button type="button" id="exportBtn" class="bg-dark hover:bg-gray-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition flex items-center justify-center gap-2 hidden">
             <i class="fa-solid fa-print text-xl"></i>
             Cetak / Simpan (PDF)
          </button>
+      </div>
+
+      <!-- Result Actions (Post-PDF) -->
+      <div id="shareWaContainer" class="hidden mt-6 pt-6 border-t-2 border-green-100 animate-fade-in">
+          <p class="text-center text-sm font-semibold text-green-700 mb-4 bg-green-50 py-2 rounded-lg">✅ PDF Berhasil disimpan! Bagikan rincian ke pelanggan:</p>
+          <button type="button" id="shareWaBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition flex items-center justify-center gap-3 group">
+            <i class="fa-brands fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i>
+            Bagikan ke WhatsApp
+          </button>
       </div>
 
     </form>
@@ -150,62 +211,36 @@
   import { jsPDF } from "jspdf";
   import html2canvas from "html2canvas";
 
+  // --- Element Selectors ---
   const form = document.getElementById('orderForm') as HTMLFormElement;
   const totalPriceEl = document.getElementById('totalPrice');
   const summaryListEl = document.getElementById('summaryList');
-  const exportBtn = document.getElementById('exportBtn');
-  
-  // UI Helpers
-  function toggleQuantityInput(checkbox: HTMLInputElement) {
-      const container = checkbox.closest('.service-item');
-      const qtyWrapper = container?.querySelector('.qty-wrapper');
-      if (qtyWrapper) {
-          if (checkbox.checked) {
-              qtyWrapper.classList.remove('opacity-50', 'pointer-events-none');
-              qtyWrapper.classList.add('opacity-100');
-          } else {
-              qtyWrapper.classList.add('opacity-50', 'pointer-events-none');
-              qtyWrapper.classList.remove('opacity-100');
-              // Reset quantity to 1 when unchecked
-              const input = qtyWrapper.querySelector('.qty-input') as HTMLInputElement;
-              if (input) input.value = '1';
-          }
-      }
-      calculateTotal();
-  }
+  const exportBtn = document.getElementById('exportBtn') as HTMLButtonElement;
+  const startWorkBtn = document.getElementById('startWorkBtn') as HTMLButtonElement;
+  const finalizeBtn = document.getElementById('finalizeBtn') as HTMLButtonElement;
+  const addItemBtn = document.getElementById('addItemBtn') as HTMLButtonElement;
+  const addItemContainer = document.getElementById('addItemContainer');
+  const statusBadge = document.getElementById('statusBadge');
+  const statusControls = document.getElementById('statusControls');
+  const paymentSection = document.getElementById('paymentSection');
+  const totalLabelEl = document.getElementById('totalLabel');
+  const servicesCheckboxes = document.querySelectorAll('.service-checkbox') as NodeListOf<HTMLInputElement>;
+  const qtyBtns = document.querySelectorAll('.qty-btn-plus, .qty-btn-minus') as NodeListOf<HTMLButtonElement>;
+  const shareWaContainer = document.getElementById('shareWaContainer');
+  const shareWaBtn = document.getElementById('shareWaBtn') as HTMLButtonElement;
 
-  // Quantity Buttons
-  document.querySelectorAll('.qty-btn-plus').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-          const input = (e.target as HTMLElement).previousElementSibling as HTMLInputElement;
-          if (input) {
-              input.value = (parseInt(input.value) + 1).toString();
-              calculateTotal();
-          }
-      });
-  });
+  // --- Role Detection ---
+  const urlParams = new URLSearchParams(window.location.search);
+  const modeParam = urlParams.get('mode') || '';
+  const isTechnician = modeParam.trim() === 'teknisihandalll_numberonee1_1-yunan-pc_1-72_';
 
-  document.querySelectorAll('.qty-btn-minus').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-          const input = (e.target as HTMLElement).nextElementSibling as HTMLInputElement;
-          if (input) {
-              const val = parseInt(input.value);
-              if (val > 1) {
-                  input.value = (val - 1).toString();
-                  calculateTotal();
-              }
-          }
-      });
-  });
-
-  const servicesCheckboxes = document.querySelectorAll('.service-checkbox');
-  servicesCheckboxes.forEach((cb: any) => {
-      cb.addEventListener('change', () => toggleQuantityInput(cb));
-  });
-
-  
+  // --- State ---
+  let serviceStatus: 'estimasi' | 'progress' | 'final' = 'estimasi';
+  let manualItems: { id: string; name: string; qty: number; price: number }[] = [];
   let selectedServices: { name: string; price: number; isEstimate: boolean; qty: number }[] = [];
-  
+  let hasSavedPdf = false;
+
+  // --- Helpers ---
   function formatRupiah(angka: number) {
       return new Intl.NumberFormat("id-ID", {
         style: "currency",
@@ -220,16 +255,106 @@
       return new Date(dateString).toLocaleDateString('id-ID', options);
   }
 
-  function calculateTotal() {
+  function toggle(element: HTMLElement | null, show: boolean) {
+      if (element) {
+          if (show) {
+              element.classList.remove('hidden');
+          } else {
+              element.classList.add('hidden');
+          }
+      }
+  }
+
+  // --- Core Logic ---
+  function renderSummary() {
+      if (!summaryListEl) return;
+      
+      const hasContent = selectedServices.length > 0 || manualItems.length > 0;
+      
+      if (!hasContent) {
+          summaryListEl.innerHTML = `<p class="text-center italic text-gray-400">Pilih layanan atau tambah rincian...</p>`;
+          return;
+      }
+
+      const html = [
+          ...selectedServices.map(s => `
+            <div class="flex justify-between items-center py-2 border-b border-gray-50 last:border-0">
+                <div class="flex-1">
+                    <span class="font-medium text-dark">${s.name}</span>
+                    <span class="text-[10px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded-md ml-2 border border-blue-100">x${s.qty}</span>
+                </div>
+                <div class="text-right font-bold text-gray-700">
+                    ${s.isEstimate ? '<span class="text-xs text-gray-400">Estimasi</span>' : formatRupiah(s.price * s.qty)}
+                </div>
+            </div>
+          `),
+          ...manualItems.map(item => {
+              if (serviceStatus === 'progress' && isTechnician) {
+                  return `
+                    <div class="bg-white p-4 rounded-xl border border-orange-100 space-y-3 mb-3 shadow-sm">
+                        <div class="flex gap-2">
+                           <input type="text" value="${item.name}" 
+                                  class="flex-1 text-sm font-medium p-2 border-b border-gray-200 focus:border-orange-400 outline-none w-full" 
+                                  placeholder="Nama Layanan/Part"
+                                  oninput="window.updateManualItem('${item.id}', 'name', this.value)">
+                           <button type="button" class="text-red-400 hover:text-red-600 p-2" onclick="window.removeManualItem('${item.id}')">
+                                <i class="fa-solid fa-trash-can"></i>
+                           </button>
+                        </div>
+                        <div class="grid grid-cols-1 xs:grid-cols-2 gap-3">
+                            <div class="flex flex-col gap-1.5 p-2.5 bg-gray-50 rounded-xl border border-gray-100">
+                                <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Jumlah</label>
+                                <input type="number" 
+                                       value="${item.qty === 0 ? '' : item.qty}" 
+                                       placeholder="0"
+                                       class="w-full bg-transparent text-base font-bold outline-none px-1"
+                                       inputmode="numeric"
+                                       onkeydown="if(event.key === '-') event.preventDefault();"
+                                       oninput="window.updateManualItem('${item.id}', 'qty', this.value)"
+                                       onblur="if(!this.value || this.value < 1) { this.value = 1; window.updateManualItem('${item.id}', 'qty', 1, true); }">
+                            </div>
+                            <div class="flex flex-col gap-1.5 p-2.5 bg-gray-50 rounded-xl border border-gray-100">
+                                <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider xs:text-right">Harga (Rp)</label>
+                                <input type="number" 
+                                       value="${item.price === 0 ? '' : item.price}" 
+                                       placeholder="0"
+                                       class="w-full bg-transparent text-base font-bold outline-none xs:text-right px-1"
+                                       inputmode="numeric"
+                                       onkeydown="if(event.key === '-') event.preventDefault();"
+                                       oninput="window.updateManualItem('${item.id}', 'price', this.value)"
+                                       onblur="if(!this.value || this.value < 0) { this.value = 0; window.updateManualItem('${item.id}', 'price', 0, true); }">
+                            </div>
+                        </div>
+                    </div>
+                  `;
+              } else {
+                  return `
+                    <div class="flex justify-between items-center py-2 border-b border-gray-50 last:border-0 italic text-primary">
+                        <div class="flex-1">
+                            <span class="font-medium">${item.name}</span>
+                            <span class="text-[10px] bg-primary/5 text-primary px-1.5 py-0.5 rounded-md ml-2 border border-primary/10">x${item.qty}</span>
+                        </div>
+                        <div class="text-right font-bold">
+                            ${formatRupiah(item.price * item.qty)}
+                        </div>
+                    </div>
+                  `;
+              }
+          })
+      ].join('');
+
+      summaryListEl.innerHTML = html;
+  }
+
+  function calculateTotal(shouldRender = true) {
     selectedServices = [];
     let total = 0;
 
-    servicesCheckboxes.forEach((checkbox: any) => {
+    servicesCheckboxes.forEach((checkbox) => {
         if (checkbox.checked) {
-            const price = parseInt(checkbox.dataset.price);
+            const price = parseInt(checkbox.dataset.price || '0');
             const isEstimate = checkbox.dataset.isEstimate === 'true';
             
-            // Get Qty
             const container = checkbox.closest('.service-item');
             const qtyInput = container?.querySelector('.qty-input') as HTMLInputElement;
             const qty = parseInt(qtyInput?.value || '1');
@@ -247,27 +372,20 @@
         }
     });
 
-    // Update Summary UI
-    if (selectedServices.length > 0) {
-        summaryListEl!.innerHTML = selectedServices.map(s => 
-            `<div class="flex justify-between items-center py-1">
-                <div class="flex-1">
-                    <span class="font-medium">${s.name}</span>
-                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full ml-2">x${s.qty}</span>
-                </div>
-                <div class="text-right">
-                    ${s.isEstimate 
-                        ? '<span class="text-xs font-bold text-gray-500">Estimasi via WA</span>' 
-                        : formatRupiah(s.price * s.qty)}
-                </div>
-             </div>`
-        ).join('');
-    } else {
-        summaryListEl!.innerHTML = `<p class="text-center italic">Belum ada layanan dipilih.</p>`;
-    }
+    // Add manual items to total
+    manualItems.forEach(item => {
+        total += item.price * item.qty;
+    });
 
-    // Upadte Summary Total
+    // Update Summary UI
+    if (shouldRender) renderSummary();
+
+    // Update Total Display
     if (totalPriceEl) {
+        if (totalLabelEl) {
+            totalLabelEl.textContent = (serviceStatus === 'final' && isTechnician) ? 'Total Tagihan:' : 'Total Estimasi:';
+        }
+
         if (total === 0 && selectedServices.length > 0) {
              totalPriceEl.innerHTML = '<span class="text-lg">Estimasi via WA</span>';
         } else {
@@ -276,11 +394,191 @@
     }
   }
 
-  // WhatsApp Submission
+  function updateStatusUI() {
+      if (!statusBadge || !exportBtn || !startWorkBtn || !finalizeBtn || !addItemContainer || !statusControls || !paymentSection || !shareWaContainer) return;
+
+      // --- 1. USER MODE: Strict Gating ---
+      if (!isTechnician) {
+          statusBadge.classList.add('hidden');
+          statusControls.classList.add('hidden');
+          addItemContainer.classList.add('hidden');
+          paymentSection.classList.add('hidden');
+          exportBtn.classList.add('hidden');
+          shareWaContainer.classList.add('hidden'); // Hide share button for non-technicians
+          calculateTotal();
+          return;
+      }
+
+      // --- 2. TECHNICIAN MODE: Global Visibility ---
+      toggle(statusBadge, true);
+      toggle(statusControls, true);
+      
+      // Reset share button if not in final or not saved yet
+      toggle(shareWaContainer, serviceStatus === 'final' && hasSavedPdf);
+      
+      // exportBtn visibility depends on status
+      toggle(exportBtn, serviceStatus === 'final');
+
+      // --- 3. TECHNICIAN MODE: Status Lifecycle ---
+      if (serviceStatus === 'estimasi') {
+          statusBadge.innerText = 'Pemesanan: Estimasi';
+          statusBadge.className = 'px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-100 text-blue-700';
+          
+          addItemContainer.classList.add('hidden');
+          paymentSection.classList.add('hidden');
+          
+          exportBtn.disabled = true;
+          exportBtn.classList.add('opacity-50', 'cursor-not-allowed');
+          
+          startWorkBtn.disabled = false;
+          startWorkBtn.classList.remove('opacity-50');
+          finalizeBtn.disabled = false;
+          finalizeBtn.classList.remove('opacity-50');
+          
+          servicesCheckboxes.forEach(cb => cb.disabled = false);
+          qtyBtns.forEach(btn => {
+              btn.disabled = false;
+              btn.classList.remove('opacity-50');
+          });
+      } else if (serviceStatus === 'progress') {
+          statusBadge.innerText = 'Status: Dalam Pengerjaan';
+          statusBadge.className = 'px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-100 text-orange-700';
+          
+          addItemContainer.classList.remove('hidden');
+          paymentSection.classList.add('hidden');
+          
+          exportBtn.disabled = true;
+          exportBtn.classList.add('opacity-50', 'cursor-not-allowed');
+          
+          startWorkBtn.disabled = true;
+          startWorkBtn.classList.add('opacity-50');
+          finalizeBtn.disabled = false;
+          finalizeBtn.classList.remove('opacity-50');
+
+          servicesCheckboxes.forEach(cb => cb.disabled = true);
+          qtyBtns.forEach(btn => {
+              btn.disabled = true;
+              btn.classList.add('opacity-50');
+          });
+      } else if (serviceStatus === 'final') {
+          statusBadge.innerText = 'Status: Selesai / Final';
+          statusBadge.className = 'px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-green-100 text-green-700';
+          
+          addItemContainer.classList.add('hidden');
+          paymentSection.classList.remove('hidden');
+          
+          exportBtn.disabled = false;
+          exportBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+          
+          startWorkBtn.disabled = true;
+          startWorkBtn.classList.add('opacity-50');
+          finalizeBtn.disabled = true;
+          finalizeBtn.classList.add('opacity-50');
+
+          servicesCheckboxes.forEach(cb => cb.disabled = true);
+          qtyBtns.forEach(btn => {
+              btn.disabled = true;
+              btn.classList.add('opacity-50');
+          });
+      }
+      calculateTotal();
+  }
+
+  // --- Event Handlers & Global Bindings ---
+  (window as any).updateManualItem = (id: string, field: string, value: any, forceRender = false) => {
+      const item = manualItems.find(i => i.id === id);
+      if (item) {
+          const numValue = parseInt(value);
+          if (field === 'qty') {
+              item.qty = isNaN(numValue) ? 0 : numValue;
+          } else if (field === 'price') {
+              item.price = isNaN(numValue) ? 0 : numValue;
+          } else {
+              (item as any)[field] = value;
+          }
+          calculateTotal(forceRender);
+      }
+  };
+
+  (window as any).removeManualItem = (id: string) => {
+      manualItems = manualItems.filter(i => i.id !== id);
+      calculateTotal();
+  };
+
+  function toggleQuantityInput(checkbox: HTMLInputElement) {
+      const container = checkbox.closest('.service-item');
+      const qtyWrapper = container?.querySelector('.qty-wrapper');
+      if (qtyWrapper) {
+          if (checkbox.checked) {
+              qtyWrapper.classList.remove('opacity-50', 'pointer-events-none');
+              qtyWrapper.classList.add('opacity-100');
+          } else {
+              qtyWrapper.classList.add('opacity-50', 'pointer-events-none');
+              qtyWrapper.classList.remove('opacity-100');
+              const input = qtyWrapper.querySelector('.qty-input') as HTMLInputElement;
+              if (input) input.value = '1';
+          }
+      }
+      calculateTotal();
+  }
+
+  // --- Attach Listeners ---
+  startWorkBtn?.addEventListener('click', () => {
+      serviceStatus = 'progress';
+      hasSavedPdf = false;
+      updateStatusUI();
+  });
+
+  finalizeBtn?.addEventListener('click', () => {
+      serviceStatus = 'final';
+      hasSavedPdf = false;
+      updateStatusUI();
+  });
+
+  addItemBtn?.addEventListener('click', () => {
+      const id = 'manual_' + Date.now();
+      manualItems.push({ id, name: '', qty: 1, price: 0 });
+      calculateTotal();
+  });
+
+  document.querySelectorAll('.qty-btn-plus').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+          const input = (e.currentTarget as HTMLElement).parentElement?.querySelector('.qty-input') as HTMLInputElement;
+          if (input) {
+              input.value = (parseInt(input.value) + 1).toString();
+              calculateTotal();
+          }
+      });
+  });
+
+  document.querySelectorAll('.qty-btn-minus').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+          const input = (e.currentTarget as HTMLElement).parentElement?.querySelector('.qty-input') as HTMLInputElement;
+          if (input) {
+              const val = parseInt(input.value);
+              if (val > 1) {
+                  input.value = (val - 1).toString();
+                  calculateTotal();
+              }
+          }
+      });
+  });
+
+  servicesCheckboxes.forEach((cb) => {
+      cb.addEventListener('change', () => toggleQuantityInput(cb));
+  });
+
+  // --- Initialization ---
+  // Ensure initialize UI logic runs after script load
+  updateStatusUI();
+  
+  // Also hook into DOMContentLoaded for extra reliability
+  document.addEventListener('DOMContentLoaded', () => {
+      updateStatusUI();
+  });
+  // --- WhatsApp & Export ---
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    
-    // Basic Validation
     if (selectedServices.length === 0) {
         alert('Harap pilih minimal satu layanan!');
         return;
@@ -289,11 +587,9 @@
     const formData = new FormData(form);
     const data = Object.fromEntries(formData);
     
-    // Recalculate Total for Message
     let total = 0;
-    selectedServices.forEach(s => {
-        if (!s.isEstimate) total += s.price * s.qty;
-    });
+    selectedServices.forEach(s => { if (!s.isEstimate) total += s.price * s.qty; });
+    manualItems.forEach(item => { total += item.price * item.qty; });
 
     const message = `Assalamualaikum Pak Yunan,
 Saya ingin memesan jasa servis:
@@ -304,11 +600,14 @@ Saya ingin memesan jasa servis:
 
 *Layanan:*
 ${selectedServices.map(s => `- ${s.name} (${s.qty} unit) ${s.isEstimate ? '[Estimasi]' : ''}`).join('\n')}
+${manualItems.map(item => `- ${item.name} (${item.qty} unit) [Tambahan]`).join('\n')}
 
 *Waktu:* ${formatDate(data.date as string)} jam ${data.time}
 *Catatan:* ${data.notes || '-'}
 
 *Estimasi Total:* ${formatRupiah(total)}
+${serviceStatus === 'final' ? '\n*Status:* LUNAS / SELESAI' : ''}
+${serviceStatus === 'final' ? '\n_Harap simpan bukti rincian ini sebagai garansi._' : ''}
 
 Terima kasih.`;
 
@@ -316,10 +615,9 @@ Terima kasih.`;
     window.open(whatsappUrl, '_blank');
   });
 
-  // PDF Export
   if (exportBtn) {
     exportBtn.addEventListener('click', async () => {
-        if (selectedServices.length === 0) {
+        if (selectedServices.length === 0 && manualItems.length === 0) {
              alert('Pilih layanan dulu untuk mencetak rincian!');
              return;
         }
@@ -328,11 +626,9 @@ Terima kasih.`;
         const data = Object.fromEntries(formData);
         
         let total = 0;
-        selectedServices.forEach(s => {
-             if (!s.isEstimate) total += s.price * s.qty;
-        });
+        selectedServices.forEach(s => { if (!s.isEstimate) total += s.price * s.qty; });
+        manualItems.forEach(item => { total += item.price * item.qty; });
 
-        // Create Receipt UI off-screen
         const receipt = document.createElement('div');
         receipt.style.padding = '40px';
         receipt.style.width = '600px';
@@ -363,7 +659,7 @@ Terima kasih.`;
                         </tr>
                     </thead>
                     <tbody>
-                    ${selectedServices.map(s => `
+                         ${selectedServices.map(s => `
                         <tr>
                             <td style="padding: 10px 0; border-bottom: 1px dashed #eee;">${s.name}</td>
                             <td style="padding: 10px 0; border-bottom: 1px dashed #eee;">x${s.qty}</td>
@@ -372,18 +668,32 @@ Terima kasih.`;
                             </td>
                         </tr>
                     `).join('')}
+                    ${manualItems.map(item => `
+                        <tr>
+                            <td style="padding: 10px 0; border-bottom: 1px dashed #eee;">${item.name} (Tambahan)</td>
+                            <td style="padding: 10px 0; border-bottom: 1px dashed #eee;">x${item.qty}</td>
+                            <td style="text-align: right; font-weight: bold; padding: 10px 0; border-bottom: 1px dashed #eee;">
+                                ${formatRupiah(item.price * item.qty)}
+                            </td>
+                        </tr>
+                    `).join('')}
                     </tbody>
                     <tfoot>
                     <tr style="font-size: 18px; font-weight: bold; color: #06b6d4;">
-                        <td colspan="2" style="padding-top: 15px;">TOTAL ESTIMASI</td>
+                        <td colspan="2" style="padding-top: 15px;">${serviceStatus === 'final' ? 'TOTAL TAGIHAN' : 'TOTAL ESTIMASI'}</td>
                         <td style="text-align: right; padding-top: 15px;">
                             ${total === 0 && selectedServices.length > 0 ? 'Estimasi via WA' : formatRupiah(total)}
                         </td>
                     </tr>
                     </tfoot>
-                </table>
+                 </table>
             </div>
             
+            <div style="margin-top: 25px; padding: 15px; border-top: 2px solid #06b6d4; border-bottom: 2px solid #06b6d4; text-align: center; background: #fdfcfb;">
+                <p style="font-weight: bold; color: #06b6d4; margin: 0; font-size: 16px;">Status: LUNAS / SELESAI</p>
+                <p style="font-size: 13px; color: #475569; margin: 5px 0 0 0;">Harap simpan bukti rincian ini sebagai garansi.</p>
+            </div>
+
             <p style="text-align: center; margin-top: 30px; font-size: 12px; color: #999;">
                 Terima kasih telah menggunakan jasa kami.<br>
                 Service Pak Yunan - 2026
@@ -391,20 +701,18 @@ Terima kasih.`;
         `;
 
         document.body.appendChild(receipt);
-
         try {
             const canvas = await html2canvas(receipt);
             const imgData = canvas.toDataURL('image/png');
-            
-            const pdf = new jsPDF({
-                orientation: 'portrait',
-                unit: 'px',
-                format: [canvas.width, canvas.height]
-            });
-            
+            const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
             pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
             pdf.save(`Pesanan-${data.name.toString().replace(/\s+/g, '-')}.pdf`);
             
+            // Show Share Button after PDF is saved
+            if (isTechnician && serviceStatus === 'final') {
+                hasSavedPdf = true;
+                updateStatusUI();
+            }
         } catch (err) {
             console.error(err);
             alert('Gagal membuat PDF');
@@ -413,4 +721,34 @@ Terima kasih.`;
         }
     });
   }
+
+  // --- Post-PDF Sharing Logic ---
+  if (shareWaBtn) {
+    shareWaBtn.addEventListener('click', () => {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+        
+        let total = 0;
+        selectedServices.forEach(s => { if (!s.isEstimate) total += s.price * s.qty; });
+        manualItems.forEach(item => { total += item.price * item.qty; });
+
+        const message = `Halo ${data.name},
+Berikut rincian pengerjaan servis Anda:
+
+*Layanan:*
+${selectedServices.map(s => `- ${s.name} (${s.qty} unit)`).join('\n')}
+${manualItems.map(item => `- ${item.name} (${item.qty} unit)`).join('\n')}
+
+*Total Pembayaran:* ${formatRupiah(total)}
+*Status:* LUNAS / SELESAI
+
+_Harap simpan rincian ini sebagai bukti garansi._
+Terima kasih telah menggunakan jasa Service Pak Yunan.`;
+
+        // Open WA with text only (opens contact picker)
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    });
+  }
 </script>
+
